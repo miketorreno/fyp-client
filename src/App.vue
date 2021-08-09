@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="inspire">
     <v-card class="mx-auto" tile>
       <v-navigation-drawer v-model="drawer" app>
         <div class="d-flex d-md-none">
@@ -75,7 +75,7 @@
     <!-- Sizes your content based upon application components -->
     <v-main>
       <!-- Provides the application the proper gutter -->
-      <v-sheet color="white" elevation="1">
+      <!-- <v-sheet color="white" elevation="1">
         <v-chip class="ma-2" outlined>
           <v-icon left>
             mdi-silverware-fork-knife
@@ -103,7 +103,61 @@
           </v-icon>
           Hotels
         </v-chip>
-      </v-sheet>
+      </v-sheet> -->
+
+      <v-card>
+        <v-tabs show-arrows>
+          <v-tabs-slider></v-tabs-slider>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon>
+              mdi-filter
+            </v-icon>
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-silverware-fork-knife
+            </v-icon>
+            Restaurants
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-gas-station
+            </v-icon>
+            Gas
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-cart
+            </v-icon>
+            Groceries
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-bed
+            </v-icon>
+            Hotels
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-bed
+            </v-icon>
+            Hotels
+          </v-chip>
+
+          <v-chip class="ma-2" outlined>
+            <v-icon left>
+              mdi-bed
+            </v-icon>
+            Hotels
+          </v-chip>
+        </v-tabs>
+      </v-card>
 
       <v-container fluid>
         <!-- If using vue-router -->
