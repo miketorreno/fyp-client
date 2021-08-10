@@ -1,10 +1,16 @@
 <template>
   <div>
-    <v-app-bar app flat dense>
-      <v-container>
-        <v-toolbar-title>Bizz</v-toolbar-title>
-        <!-- <v-spacer class="d-none d-md-flex"></v-spacer> -->
-      </v-container>
+    <v-app-bar app flat>
+      <v-toolbar-title>Bizz</v-toolbar-title>
+
+      <v-spacer class=""></v-spacer>
+
+      <v-btn v-show="page == 'CreateAccount'" plain to="/login" class="mr-4"
+        >Login</v-btn
+      >
+      <v-btn v-show="page == 'Login'" plain to="/create-account"
+        >Create Account</v-btn
+      >
     </v-app-bar>
 
     <v-main>
@@ -19,5 +25,10 @@
 export default {
   name: "AuthLayout",
   data: () => ({}),
+  computed: {
+    page() {
+      return this.$route.name;
+    },
+  },
 };
 </script>

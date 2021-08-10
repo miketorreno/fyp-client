@@ -33,6 +33,18 @@ const routes = [
       import(/* webpackChunkName: "login" */ "../views/auth/Login.vue"),
     meta: { layout: AuthLayout },
   },
+  {
+    path: "/create-account",
+    name: "CreateAccount",
+    // route level code-splitting
+    // this generates a separate chunk (createaccount.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "createaccount" */ "../views/auth/CreateAccount.vue"
+      ),
+    meta: { layout: AuthLayout },
+  },
 ];
 
 const router = new VueRouter({
