@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
+
 export default {
   name: "Login",
   computed: {
@@ -81,8 +83,9 @@ export default {
   },
   methods: {
     validate() {
-      if (this.$refs.loginForm.validate()) {
+      if (this.$refs.registerForm.validate()) {
         // submit form to server/API here...
+        this.createAccount();
       }
     },
     reset() {
@@ -90,6 +93,42 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+    async createAccount() {
+      // Call to the graphql mutation
+      await this.$apollo.mutate({
+        // Query
+        mutation: gql`
+          mutation(
+            $__id: String!
+            $name: String!
+            $email: String!
+            $password: String!
+            $avatar: String!
+          ) {
+            createUser(
+              __id: $__id
+              name: $name
+              email: $email
+              password: $password
+              avatar: $avatar
+            ) {
+              id
+              __id
+              name
+              email
+            }
+          }
+        `,
+        // Parameters
+        variables: {
+          __id: this.nid,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          avatar: this.avatar,
+        },
+      });
     },
   },
   data: () => ({
@@ -100,7 +139,10 @@ export default {
       { name: "Register", icon: "mdi-account-outline" },
     ],
     valid: true,
+    name: "Constant",
 
+    nid: "XZLrDATAlG2uex4mfqVeUd",
+    avatar: "lkasjdfljasdlfsd.jps",
     firstName: "",
     lastName: "",
     email: "",
