@@ -8,40 +8,12 @@ import {
 // Install the vue plugin
 Vue.use(VueApollo);
 
-// import { ApolloClient } from 'apollo-client';
-import { createHttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { setContext } from "apollo-link-context";
-
-// XSRF token is required to make post requests to your Laravel backend
-const authLink = setContext((_, { headers }) => {
-  let token = RegExp("XSRF-TOKEN[^;]+").exec(document.cookie);
-  token = decodeURIComponent(
-    token ? token.toString().replace(/^[^=]+./, "") : ""
-  );
-  return {
-    headers: {
-      ...headers,
-      "X-XSRF-TOKEN": token,
-    },
-  };
-});
-
-const httpLink = createHttpLink({
-  // uri: "https://server.test/graphql", // The graphql endpoint url
-  uri: "http://127.0.0.1:8000/graphql",
-  credentials: "same-origin",
-});
-
-// Cache implementation
-const cache = new InMemoryCache();
-
 // Name of the localStorage item
 const AUTH_TOKEN = "apollo-token";
 
 // Http endpoint
 const httpEndpoint =
-  process.env.VUE_APP_GRAPHQL_HTTP || "http://127.0.0.1:8000/graphql";
+  process.env.VUE_APP_GRAPHQL_HTTP || "https://server.test/graphql";
 // Files URL root
 export const filesRoot =
   process.env.VUE_APP_FILES_ROOT ||
@@ -67,19 +39,13 @@ const defaultOptions = {
   // Is being rendered on the server?
   ssr: false,
 
-  // httpLinkOptions: {
-  //   uri: "/graphql",
-  //   credentials: "same-origin",
-  // },
-
   // Override default apollo link
   // note: don't override httpLink here, specify httpLink options in the
   // httpLinkOptions property of defaultOptions.
-  // link: httpLink,
-  link: authLink.concat(httpLink),
+  // link: myLink
 
   // Override default cache
-  cache: cache,
+  // cache: myCache
 
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...

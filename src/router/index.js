@@ -24,6 +24,16 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/apollo",
+    name: "Apollo",
+    // route level code-splitting
+    // this generates a separate chunk (apollo.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "apollo" */ "../views/Apollo.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
     path: "/login",
     name: "Login",
     // route level code-splitting
