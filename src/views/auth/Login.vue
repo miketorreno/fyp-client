@@ -42,6 +42,10 @@
 </template>
 
 <script>
+import axios from "axios";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:8000";
+
 export default {
   name: "Login",
   computed: {
@@ -50,9 +54,34 @@ export default {
     },
   },
   methods: {
+    handleLogin() {
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        console.log(response);
+        axios
+          .post("/login", {
+            email: this.loginEmail,
+            password: this.loginPassword,
+          })
+          .then((response) => {
+            if (response.status && response.status == 200) {
+              this.$router.push({
+                name: "Home",
+              });
+            }
+          })
+          .catch((error) => {
+            if (error.response.data.exception) {
+              this.exception = error.response.data.message;
+            }
+            this.errors = error.response.data.errors;
+            console.log(error, this.exception, this.errors);
+          }); // credentials didn't match
+      });
+    },
     validate() {
       if (this.$refs.loginForm.validate()) {
         // submit form to server/API here...
+        this.handleLogin();
       }
     },
     reset() {
@@ -62,6 +91,13 @@ export default {
       this.$refs.form.resetValidation();
     },
   },
+  // created() {
+  //   axios.get("http://127.0.0.1:8000/sanctum/csrf-cookie", {
+  //         withCredentials: true,
+  //       }).then((response) => {
+  //     console.log(response);
+  //   });
+  // },
   data: () => ({
     dialog: true,
     tab: 0,
@@ -70,12 +106,9 @@ export default {
       { name: "Register", icon: "mdi-account-outline" },
     ],
     valid: true,
+    errors: "",
+    user: null,
 
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    verify: "",
     loginPassword: "",
     loginEmail: "",
     loginEmailRules: [
