@@ -6,20 +6,11 @@
       <v-card-text>
         <v-form ref="registerForm" v-model="valid" lazy-validation>
           <v-row>
-            <v-col cols="12" sm="6" md="6">
+            <v-col cols="12">
               <v-text-field
-                v-model="firstName"
+                v-model="name"
                 :rules="[rules.required]"
-                label="First Name"
-                maxlength="20"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <v-text-field
-                v-model="lastName"
-                :rules="[rules.required]"
-                label="Last Name"
+                label="Name"
                 maxlength="20"
                 required
               ></v-text-field>
@@ -72,20 +63,54 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
+// import nanoid from "nanoid";
+import axios from "axios";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:8000";
 
 export default {
-  name: "Login",
+  name: "Register",
   computed: {
     passwordMatch() {
       return () => this.password === this.verify || "Password must match";
     },
   },
   methods: {
+    register() {
+      this.loading = true;
+      axios.get("/sanctum/csrf-cookie").then((response) => {
+        console.log(response);
+        axios
+          .post("/register", {
+            __id: this.nid,
+            name: this.name,
+            avatar: this.avatar,
+            email: this.email,
+            password: this.password,
+            password_confirmation: this.verify,
+          })
+          .then((response) => {
+            if (response.status && response.status == 201) {
+              this.$router.push({
+                name: "Home",
+              });
+            }
+          })
+          .catch((error) => {
+            if (error.response.data.exception) {
+              this.exception = error.response.data.message;
+            }
+            this.errors = error.response.data.errors;
+            console.log(error, this.exception, this.errors);
+          })
+          .finally(() => (this.loading = false)); // credentials didn't match
+      });
+    },
     validate() {
       if (this.$refs.registerForm.validate()) {
         // submit form to server/API here...
-        this.createAccount();
+        this.register();
       }
     },
     reset() {
@@ -93,42 +118,6 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    },
-    async createAccount() {
-      // Call to the graphql mutation
-      await this.$apollo.mutate({
-        // Query
-        mutation: gql`
-          mutation(
-            $__id: String!
-            $name: String!
-            $email: String!
-            $password: String!
-            $avatar: String!
-          ) {
-            createUser(
-              __id: $__id
-              name: $name
-              email: $email
-              password: $password
-              avatar: $avatar
-            ) {
-              id
-              __id
-              name
-              email
-            }
-          }
-        `,
-        // Parameters
-        variables: {
-          __id: this.nid,
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          avatar: this.avatar,
-        },
-      });
     },
   },
   data: () => ({
@@ -139,12 +128,11 @@ export default {
       { name: "Register", icon: "mdi-account-outline" },
     ],
     valid: true,
-    name: "Constant",
+    loading: false,
+    errors: "",
+    avatar: "user.jpg",
 
-    nid: "XZLrDATAlG2uex4mfqVeUd",
-    avatar: "lkasjdfljasdlfsd.jps",
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     verify: "",

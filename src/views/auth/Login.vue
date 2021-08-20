@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     handleLogin() {
+      this.loading = true;
       axios.get("/sanctum/csrf-cookie").then((response) => {
         console.log(response);
         axios
@@ -75,7 +76,8 @@ export default {
             }
             this.errors = error.response.data.errors;
             console.log(error, this.exception, this.errors);
-          }); // credentials didn't match
+          })
+          .finally(() => (this.loading = false)); // credentials didn't match
       });
     },
     validate() {
@@ -106,8 +108,8 @@ export default {
       { name: "Register", icon: "mdi-account-outline" },
     ],
     valid: true,
+    loading: false,
     errors: "",
-    user: null,
 
     loginPassword: "",
     loginEmail: "",
