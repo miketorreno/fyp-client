@@ -3,6 +3,9 @@
     <v-card class="px-4" max-width="600px" min-width="360px">
       <v-card-title>Create Account</v-card-title>
 
+      <v-alert v-if="error" align="left" dense outlined type="warning">
+        {{ error }}
+      </v-alert>
       <v-card-text>
         <v-form ref="registerForm" v-model="valid" lazy-validation>
           <v-row>
@@ -11,7 +14,7 @@
                 v-model="name"
                 :rules="[rules.required]"
                 label="Name"
-                maxlength="20"
+                maxlength="50"
                 required
               ></v-text-field>
             </v-col>
@@ -101,12 +104,14 @@ export default {
               });
             }
           })
-          .catch((error) => {
-            if (error.response.data.exception) {
-              this.exception = error.response.data.message;
-            }
-            this.errors = error.response.data.errors;
-            console.log(error, this.exception, this.errors);
+          .catch((errors) => {
+            const key = Object.keys(errors.response.data.errors)[0];
+            this.error = errors.response.data.errors[key][0];
+            // if (error.response.data.exception) {
+            //   this.exception = error.response.data.message;
+            // }
+            // this.errors = error.response.data.errors;
+            // console.log(error, this.exception, this.errors);
           })
           .finally(() => (this.loading = false)); // credentials didn't match
       });
@@ -125,17 +130,11 @@ export default {
     },
   },
   data: () => ({
-    dialog: true,
-    tab: 0,
-    tabs: [
-      { name: "Login", icon: "mdi-account" },
-      { name: "Register", icon: "mdi-account-outline" },
-    ],
     valid: true,
     loading: false,
-    errors: "",
-    avatar: "user.jpg",
+    error: "",
 
+    avatar: "user.jpg",
     name: "",
     email: "",
     password: "",

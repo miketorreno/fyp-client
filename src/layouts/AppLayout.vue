@@ -168,6 +168,7 @@ export default {
     drawer: null,
     selectedItem: null,
     showMenu: false,
+    errors: null,
     items: [
       { text: "My Files", icon: "mdi-folder" },
       { text: "Shared with me", icon: "mdi-account-multiple" },
@@ -183,15 +184,18 @@ export default {
       axios
         .post("/logout")
         .then((response) => {
+          if (response.status) {
+            //
+          }
           localStorage.removeItem("fyptoken");
-          this.$router.push({ name: "Login" });
+          this.$router.push({ name: "Home" });
         })
         .catch((errors) => {
-          if (error.response.data.exception) {
-            this.exception = error.response.data.message;
+          if (errors.response.data.exception) {
+            this.exception = errors.response.data.message;
           }
-          this.errors = error.response.data.errors;
-          console.log(error, this.exception, this.errors);
+          this.errors = errors.response.data.errors;
+          console.log(errors, this.exception, this.errors);
         });
     },
   },
