@@ -60,7 +60,9 @@ export default {
     handleLogin() {
       this.loading = true;
       axios.get("/sanctum/csrf-cookie").then((response) => {
-        console.log(response);
+        if (response.status) {
+          //
+        }
         axios
           .post("/login", {
             email: this.loginEmail,
@@ -68,10 +70,11 @@ export default {
           })
           .then((response) => {
             if (response.status && response.status == 200) {
-              localStorage.setItem(
-                "fyptoken",
-                "eyJpdiI6Im8wZkVoWmh0YytDOW4rS2d3Tk1EM0E9PSIsInZhbHVlIjoiTmdCV2hBQkRqUXlyY3FtbjlIVjZWT1N5eEZ5cmcvN0ZnWmovdGJIcU1zMEhibHVnaGQybldFTk5YTXk0TWJvOHZFdHNXYWhaZkJ2bEZTMWl1WlZNQm9jMWFYRnVKSFdtZEVSMnJvR0tnZnhWZWZabkJpV2VCS0FtUkVaRkZCT2ciLCJtYWMiOiJiODc1ODdiZTgzNjhhYzZhZmUyMDllY2RmZmQ2MTQ1NTliYzkxMTY0MTQ1NmQ3NTRlYTJhZWUxMjQ3MTEwN2ZjIn0%3D"
-              );
+              this.fyptoken = document.cookie
+                .split("; ")
+                .find((row) => row.startsWith("XSRF-TOKEN="))
+                .split("=")[1];
+              localStorage.setItem("fyptoken", this.fyptoken);
               this.$router.push({
                 name: "Home",
               });
@@ -108,6 +111,7 @@ export default {
     valid: true,
     loading: false,
     error: "",
+    fyptoken: "",
 
     loginPassword: "",
     loginEmail: "",
