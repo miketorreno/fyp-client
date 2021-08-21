@@ -33,6 +33,10 @@ export default {
         }
       })
       .catch((errors) => {
+        if (errors.response.status == 401) {
+          localStorage.removeItem("fyptoken");
+          this.$router.push({ name: "Login" });
+        }
         if (errors.response.data.exception) {
           this.exception = errors.response.data.message;
         }
