@@ -67,9 +67,32 @@
       ></v-text-field>
 
       <v-spacer class="d-none d-md-flex"></v-spacer>
-      <v-avatar size="42">
+
+      <!-- <v-avatar size="42">
         <img src="@/assets/img/john.jpg" alt="John" />
-      </v-avatar>
+      </v-avatar> -->
+
+      <v-menu v-model="showMenu">
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar size="42">
+            <img
+              src="@/assets/img/john.jpg"
+              alt="John"
+              v-bind="attrs"
+              v-on="on"
+            />
+          </v-avatar>
+        </template>
+
+        <v-list>
+          <v-list-item :to="{ path: '/profile' }">
+            <v-list-item-title>Profile</v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{ path: '' }" @click.prevent="logout">
+            <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -135,11 +158,16 @@
 </template>
 
 <script>
+import axios from "axios";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:8000";
+
 export default {
   name: "AppLayout",
   data: () => ({
     drawer: null,
     selectedItem: null,
+    showMenu: false,
     items: [
       { text: "My Files", icon: "mdi-folder" },
       { text: "Shared with me", icon: "mdi-account-multiple" },
@@ -150,5 +178,22 @@ export default {
       { text: "Backups", icon: "mdi-cloud-upload" },
     ],
   }),
+  methods: {
+    logout() {
+      axios
+        .post("/logout")
+        .then((response) => {
+          localStorage.removeItem("fyptoken");
+          this.$router.push({ name: "Login" });
+        })
+        .catch((errors) => {
+          if (error.response.data.exception) {
+            this.exception = error.response.data.message;
+          }
+          this.errors = error.response.data.errors;
+          console.log(error, this.exception, this.errors);
+        });
+    },
+  },
 };
 </script>

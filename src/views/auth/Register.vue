@@ -92,6 +92,10 @@ export default {
           })
           .then((response) => {
             if (response.status && response.status == 201) {
+              localStorage.setItem(
+                "fyptoken",
+                "eyJpdiI6Im8wZkVoWmh0YytDOW4rS2d3Tk1EM0E9PSIsInZhbHVlIjoiTmdCV2hBQkRqUXlyY3FtbjlIVjZWT1N5eEZ5cmcvN0ZnWmovdGJIcU1zMEhibHVnaGQybldFTk5YTXk0TWJvOHZFdHNXYWhaZkJ2bEZTMWl1WlZNQm9jMWFYRnVKSFdtZEVSMnJvR0tnZnhWZWZabkJpV2VCS0FtUkVaRkZCT2ciLCJtYWMiOiJiODc1ODdiZTgzNjhhYzZhZmUyMDllY2RmZmQ2MTQ1NTliYzkxMTY0MTQ1NmQ3NTRlYTJhZWUxMjQ3MTEwN2ZjIn0%3D"
+              );
               this.$router.push({
                 name: "Home",
               });

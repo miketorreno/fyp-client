@@ -5,10 +5,10 @@
 
       <v-spacer class=""></v-spacer>
 
-      <v-btn v-show="page == 'CreateAccount'" plain to="/login" class="mr-4"
+      <v-btn v-show="page == 'Register'" plain to="/login" class="mr-4"
         >Login</v-btn
       >
-      <v-btn v-show="page == 'Login'" plain to="/create-account"
+      <v-btn v-show="page == 'Login'" plain to="/register"
         >Create Account</v-btn
       >
     </v-app-bar>

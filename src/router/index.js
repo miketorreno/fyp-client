@@ -24,11 +24,15 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/profile",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
+    meta: { requiresAuth: true, layout: AppLayout },
+  },
+  {
     path: "/apollo",
     name: "Apollo",
-    // route level code-splitting
-    // this generates a separate chunk (apollo.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "apollo" */ "../views/Apollo.vue"),
     meta: { layout: AppLayout },
@@ -36,22 +40,24 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    // route level code-splitting
-    // this generates a separate chunk (login.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/auth/Login.vue"),
-    meta: { layout: AuthLayout },
+    meta: { requiresGuest: true, layout: AuthLayout },
   },
   {
     path: "/register",
     name: "Register",
-    // route level code-splitting
-    // this generates a separate chunk (register.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "register" */ "../views/auth/Register.vue"),
-    meta: { layout: AuthLayout },
+    meta: { requiresGuest: true, layout: AuthLayout },
+  },
+  {
+    // path: "*",
+    path: "/:catchAll(.*)",
+    name: "NotFound",
+    component: () =>
+      import(/* webpackChunkName: "NotFound" */ "../views/NotFound.vue"),
+    meta: { layout: AppLayout },
   },
 ];
 
