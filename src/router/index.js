@@ -8,6 +8,36 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/vuemap",
+    name: "VueMap",
+    component: () =>
+      import(/* webpackChunkName: "vuemap" */ "../views/Expt/VueMap.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
+    path: "/vuelaravelmap",
+    name: "VueLaravelMap",
+    component: () =>
+      import(
+        /* webpackChunkName: "vuelaravelmap" */ "../views/Expt/VueLaravelMap.vue"
+      ),
+    meta: { layout: AppLayout },
+  },
+  {
+    path: "/axios",
+    name: "Axios",
+    component: () =>
+      import(/* webpackChunkName: "axios" */ "../views/Expt/Axios.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
+    path: "/apollo",
+    name: "Apollo",
+    component: () =>
+      import(/* webpackChunkName: "apollo" */ "../views/Expt/Apollo.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
     path: "/",
     name: "Home",
     component: Home,
@@ -29,13 +59,6 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
     meta: { requiresAuth: true, layout: AppLayout },
-  },
-  {
-    path: "/apollo",
-    name: "Apollo",
-    component: () =>
-      import(/* webpackChunkName: "apollo" */ "../views/Apollo.vue"),
-    meta: { layout: AppLayout },
   },
   {
     path: "/login",
