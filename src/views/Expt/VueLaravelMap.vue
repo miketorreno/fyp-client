@@ -32,6 +32,8 @@
           <p v-text="activeBusiness.city">1234 Test Drive</p>
         </div>
       </GmapInfoWindow>
+      <GmapMarker :position="getMyPosition(myCoordinates)" :icon="icon" />
+
       <GmapMarker
         :key="index"
         v-for="(b, index) in businesses.data"
@@ -58,6 +60,12 @@ export default {
       lat: 0,
       lng: 0,
     },
+    iconColor: "http://maps.google.com/mapfiles/kml/paddle/blu-circle.png",
+    icon: {
+      url: "http://maps.google.com/mapfiles/kml/paddle/blu-circle.png",
+      scaledSize: { width: 28, height: 28 },
+      // labelOrigin: { x: 16, y: -10 },
+    },
     zoom: 15,
     businesses: [],
     activeBusiness: {},
@@ -75,6 +83,8 @@ export default {
     } else {
       this.$getLocation({})
         .then((coordinates) => {
+          coordinates.lat.toFixed(7);
+          coordinates.lng.toFixed(7);
           this.myCoordinates = coordinates;
           console.log(coordinates);
         })
@@ -130,6 +140,12 @@ export default {
         lng: parseFloat(b.longitude),
       };
     },
+    getMyPosition(coords) {
+      return {
+        lat: parseFloat(coords.lat),
+        lng: parseFloat(coords.lng),
+      };
+    },
     handleMarkerClick(b) {
       this.activeBusiness = b;
       this.infoWindowOpened = true;
@@ -140,8 +156,14 @@ export default {
     },
     handleDrag() {
       let center = {
-        lat: this.map.getCenter().lat(),
-        lng: this.map.getCenter().lng(),
+        lat: this.map
+          .getCenter()
+          .lat()
+          .toFixed(7),
+        lng: this.map
+          .getCenter()
+          .lng()
+          .toFixed(7),
       };
       let zoom = this.map.getZoom();
 

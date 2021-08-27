@@ -54,7 +54,44 @@
     <v-app-bar app flat dense>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-text-field
+      <v-form class="search">
+        <div class="d-flex">
+          <v-autocomplete
+            hide-details
+            light
+            solo
+            denses
+            prepend-inner-icon="mdi-magnify"
+            flat
+            single-line
+            placeholder="Find"
+            clearable
+            v-model="categoryValue"
+            :items="searchCategories"
+            style="border-right: 2px solid #777;"
+          ></v-autocomplete>
+          <v-autocomplete
+            hide-details
+            light
+            solo
+            denses
+            prepend-inner-icon="mdi-map-marker"
+            flat
+            single-line
+            placeholder="Near"
+            clearable
+            v-model="placeValue"
+            :items="searchPlaces"
+          ></v-autocomplete>
+          <v-btn large tile color="primary" height="48px">
+            <v-icon>
+              mdi-magnify
+            </v-icon>
+          </v-btn>
+        </div>
+      </v-form>
+
+      <!-- <v-text-field
         hide-details
         light
         solo
@@ -64,7 +101,7 @@
         flat
         single-line
         placeholder="Search here"
-      ></v-text-field>
+      ></v-text-field> -->
 
       <v-spacer class="d-none d-md-flex"></v-spacer>
 
@@ -178,6 +215,16 @@ export default {
       { text: "Uploads", icon: "mdi-upload" },
       { text: "Backups", icon: "mdi-cloud-upload" },
     ],
+    categoryValue: null,
+    placeValue: null,
+    searchCategories: ["category 1", "category 2", "category 3", "category 4"],
+    searchPlaces: [
+      "Current Location",
+      "place 1",
+      "place 2",
+      "place 3",
+      "place 4",
+    ],
   }),
   methods: {
     logout() {
@@ -201,3 +248,9 @@ export default {
   },
 };
 </script>
+<style>
+.search .v-text-field--outlined,
+.search .v-text-field--solo {
+  border-radius: 0 !important;
+}
+</style>
