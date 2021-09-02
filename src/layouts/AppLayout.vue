@@ -54,7 +54,7 @@
     <v-app-bar app flat dense>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-form class="search">
+      <v-form class="search" style="width:100%">
         <div class="d-flex">
           <v-autocomplete
             hide-details
@@ -111,7 +111,7 @@
 
       <v-menu v-model="showMenu">
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar size="42">
+          <v-avatar class="d-none d-md-flex ml-5" size="42">
             <img
               src="@/assets/img/john.jpg"
               alt="John"
@@ -249,6 +249,9 @@ export default {
 };
 </script>
 <style>
+.container {
+  padding: 0 !important;
+}
 .search .v-text-field--outlined,
 .search .v-text-field--solo {
   border-radius: 0 !important;

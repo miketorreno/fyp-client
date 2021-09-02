@@ -1,0 +1,42 @@
+query {
+  businesses(page: 1) {
+    paginatorInfo {
+      total
+      currentPage
+      lastPage
+      hasMorePages
+    }
+    data {
+      id
+      __id
+      business_name
+      address
+      city
+      state
+      postal_code
+      latitude
+      longitude
+      location
+      geohash
+      telephone_number
+      email
+      website
+      image_url
+      header_image
+      is_open
+      verified
+      claimed
+      category {
+        id
+        __id
+        category
+      }
+      reviews {
+        id
+        __id
+        rating
+        review
+      }
+    }
+  }
+}

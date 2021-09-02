@@ -44,6 +44,18 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/business/:id",
+    name: "Business",
+    // route level code-splitting
+    // this generates a separate chunk (business.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "business" */ "../views/business/Business.vue"
+      ),
+    meta: { layout: AppLayout },
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting
@@ -75,8 +87,8 @@ const routes = [
     meta: { requiresGuest: true, layout: AuthLayout },
   },
   {
-    // path: "*",
-    path: "/:catchAll(.*)",
+    path: "*",
+    // path: "/:catchAll(.*)",
     name: "NotFound",
     component: () =>
       import(/* webpackChunkName: "NotFound" */ "../views/NotFound.vue"),
