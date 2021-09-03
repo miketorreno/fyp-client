@@ -150,7 +150,6 @@
                             <v-row>
                               <v-col cols="12" md="10">
                                 <v-rating
-                                  v-model="rating"
                                   background-color="amber lighten-3"
                                   color="amber"
                                 ></v-rating>
@@ -245,7 +244,6 @@
                             <v-row>
                               <v-col cols="12" md="10">
                                 <v-rating
-                                  v-model="rating"
                                   background-color="amber lighten-3"
                                   color="amber"
                                 ></v-rating>

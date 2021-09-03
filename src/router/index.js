@@ -56,6 +56,38 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/business/:id/writeareview",
+    name: "WriteReview",
+    // route level code-splitting
+    // this generates a separate chunk (writereview.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(
+        /* webpackChunkName: "writereview" */ "../views/business/WriteReview.vue"
+      ),
+    meta: { layout: AppLayout },
+  },
+  {
+    path: "/writeareview",
+    name: "Review",
+    // route level code-splitting
+    // this generates a separate chunk (review.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "review" */ "../views/business/Review.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
+    path: "/recent",
+    name: "Recent",
+    // route level code-splitting
+    // this generates a separate chunk (recent.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "recent" */ "../views/business/Recent.vue"),
+    meta: { layout: AppLayout },
+  },
+  {
     path: "/about",
     name: "About",
     // route level code-splitting

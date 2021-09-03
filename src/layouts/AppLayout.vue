@@ -22,7 +22,7 @@
         </div>
 
         <v-list class="d-none d-md-flex">
-          <v-list-item link>
+          <v-list-item link :to="{ path: '/' }">
             <v-list-item-content>
               <v-list-item-title class="text-h6 text-center">
                 Bizz
@@ -37,7 +37,11 @@
 
         <v-list outlined>
           <v-list-item-group v-model="selectedItem" color="primary">
-            <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item
+              v-for="(item, i) in items"
+              :key="i"
+              :to="{ path: item.link }"
+            >
               <v-list-item-icon>
                 <v-icon v-text="item.icon"></v-icon>
               </v-list-item-icon>
@@ -125,8 +129,15 @@
           <v-list-item :to="{ path: '/profile' }">
             <v-list-item-title>Profile</v-list-item-title>
           </v-list-item>
-          <v-list-item :to="{ path: '' }" @click.prevent="logout">
+          <v-list-item
+            v-if="token"
+            :to="{ path: '/logout' }"
+            @click.prevent="logout"
+          >
             <v-list-item-title>Logout</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-else :to="{ path: '/login' }">
+            <v-list-item-title>Login</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -203,17 +214,33 @@ export default {
   name: "AppLayout",
   data: () => ({
     drawer: null,
+    token: localStorage.getItem("fyptoken"),
     selectedItem: null,
     showMenu: false,
     errors: null,
     items: [
-      { text: "My Files", icon: "mdi-folder" },
-      { text: "Shared with me", icon: "mdi-account-multiple" },
-      { text: "Starred", icon: "mdi-star" },
-      { text: "Recent", icon: "mdi-history" },
-      { text: "Offline", icon: "mdi-check-circle" },
-      { text: "Uploads", icon: "mdi-upload" },
-      { text: "Backups", icon: "mdi-cloud-upload" },
+      {
+        text: "Write a Review",
+        icon: "mdi-star-box-outline",
+        link: "/writeareview",
+      },
+      {
+        text: "Notifications",
+        icon: "mdi-bell-outline",
+        link: "/notifications",
+      },
+      {
+        text: "Activities",
+        icon: "mdi-chart-line-variant",
+        link: "/activities",
+      },
+      { text: "Recently Viewed", icon: "mdi-history", link: "/recent" },
+      {
+        text: "Add a Business",
+        icon: "mdi-office-building-outline",
+        link: "/addabusiness",
+      },
+      /* { text: "Settings", icon: "mdi-cog-outline", link: "/settings" }, */
     ],
     categoryValue: null,
     placeValue: null,
@@ -235,6 +262,7 @@ export default {
             //
           }
           localStorage.removeItem("fyptoken");
+          this.token = null;
           this.$router.push({ name: "Home" });
         })
         .catch((errors) => {
@@ -252,8 +280,8 @@ export default {
 .container {
   padding: 0 !important;
 }
-.search .v-text-field--outlined,
-.search .v-text-field--solo {
+.search .v-text-field,
+.search .v-text-field {
   border-radius: 0 !important;
 }
 </style>
