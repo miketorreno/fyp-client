@@ -58,7 +58,13 @@
     <v-app-bar app flat dense>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-form class="search" style="width:100%">
+      <v-form
+        ref="search"
+        v-model="valid"
+        lazy-validation
+        class="search"
+        style="width:100%"
+      >
         <div class="d-flex">
           <v-autocomplete
             hide-details
@@ -71,7 +77,10 @@
             placeholder="Find"
             clearable
             v-model="categoryValue"
-            :items="searchCategories"
+            :items="categories"
+            item-text="category"
+            item-value="id"
+            :rules="[(v) => !!v || 'This is required']"
             style="border-right: 2px solid #777;"
           ></v-autocomplete>
           <v-autocomplete
@@ -85,9 +94,17 @@
             placeholder="Near"
             clearable
             v-model="placeValue"
-            :items="searchPlaces"
+            :items="places"
+            :rules="[(v) => !!v || 'This is required']"
           ></v-autocomplete>
-          <v-btn large tile color="primary" height="48px">
+          <v-btn
+            large
+            tile
+            :disabled="!valid"
+            color="primary"
+            @click="validate"
+            height="48px"
+          >
             <v-icon>
               mdi-magnify
             </v-icon>
@@ -143,8 +160,8 @@
       </v-menu>
     </v-app-bar>
 
-    <v-main>
-      <v-card>
+    <v-main class="mt-1">
+      <!-- <v-card>
         <v-tabs show-arrows>
           <v-tabs-slider></v-tabs-slider>
 
@@ -196,7 +213,7 @@
             Hotels
           </v-chip>
         </v-tabs>
-      </v-card>
+      </v-card> -->
 
       <v-container fluid>
         <slot></slot>
@@ -210,8 +227,22 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = "http://localhost:8000";
 
+import gql from "graphql-tag";
+
 export default {
   name: "AppLayout",
+  apollo: {
+    categories: gql`
+      query {
+        categories {
+          id
+          parent_id
+          __id
+          category
+        }
+      }
+    `,
+  },
   data: () => ({
     drawer: null,
     token: localStorage.getItem("fyptoken"),
@@ -242,16 +273,12 @@ export default {
       },
       /* { text: "Settings", icon: "mdi-cog-outline", link: "/settings" }, */
     ],
+    valid: true,
     categoryValue: null,
     placeValue: null,
-    searchCategories: ["category 1", "category 2", "category 3", "category 4"],
-    searchPlaces: [
-      "Current Location",
-      "place 1",
-      "place 2",
-      "place 3",
-      "place 4",
-    ],
+    // searchCategories: ["Loading..."],
+    categories: [],
+    places: ["Addis Ababa", "Adama", "Bishoftu"],
   }),
   methods: {
     logout() {
@@ -272,6 +299,14 @@ export default {
           this.errors = errors.response.data.errors;
           console.log(errors, this.exception, this.errors);
         });
+    },
+    validate() {
+      if (this.$refs.search.validate()) {
+        this.$router.push({
+          name: "Search",
+          params: { business: this.categoryValue, location: this.placeValue },
+        });
+      }
     },
   },
 };

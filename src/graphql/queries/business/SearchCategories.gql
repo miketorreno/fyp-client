@@ -1,0 +1,8 @@
+query {
+  categories {
+    id
+    parent_id
+    __id
+    category
+  }
+}

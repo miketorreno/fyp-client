@@ -56,6 +56,17 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/search/:business/:location",
+    name: "Search",
+    // route level code-splitting
+    // this generates a separate chunk (search.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "search" */ "../views/business/Search.vue"),
+    meta: { layout: AppLayout },
+    props: true,
+  },
+  {
     path: "/business/:id/writeareview",
     name: "WriteReview",
     // route level code-splitting
