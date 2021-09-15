@@ -22,7 +22,7 @@
             <v-card-subtitle>
               <v-row class="pa-2">
                 <v-rating
-                  :value="4.5"
+                  :value="data.business.ratingAvg"
                   color="amber"
                   dense
                   half-increments
@@ -31,7 +31,9 @@
                 ></v-rating>
 
                 <div class="grey--text ms-4 subtitle-1 fs-125">
-                  4.5 (413)
+                  {{ data.business.ratingAvg }} ({{
+                    data.business.reviewCount
+                  }})
                 </div>
               </v-row>
               <v-row class="pa-3">
@@ -216,14 +218,6 @@
                               color="deep-purple accent-3"
                               group
                             >
-                              <v-btn outlined value="helpful">
-                                <v-icon left>mdi-thumb-up-outline</v-icon>
-                                Helpful
-                              </v-btn>
-                              <v-btn outlined value="nothelpful">
-                                <v-icon left>mdi-thumb-down-outline</v-icon>
-                                Not Helpful
-                              </v-btn>
                             </v-btn-toggle>
                           </div>
                         </v-list>
@@ -327,21 +321,33 @@
                               </div>
                             </v-row>
                             <p>{{ r.review }}</p>
-                            <v-btn-toggle
+                            <!-- <v-btn-toggle
                               v-model="text"
                               tile
                               color="deep-purple accent-3"
                               group
+                            > -->
+                            <v-btn small @click="vote(r.id, 1)" class="mr-2">
+                              <v-icon left>mdi-thumb-up-outline</v-icon>
+                              helpful
+                            </v-btn>
+                            <span class="subtitle-1 mr-5 mt-4">{{
+                              r.voteCount
+                            }}</span>
+
+                            <!-- <v-btn
+                              small
+                              outlined
+                              @click="vote(r.id, 0)"
+                              class="mr-1"
                             >
-                              <v-btn outlined value="helpful">
-                                <v-icon left>mdi-thumb-up-outline</v-icon>
-                                Helpful
-                              </v-btn>
-                              <v-btn outlined value="nothelpful">
-                                <v-icon left>mdi-thumb-down-outline</v-icon>
-                                Not Helpful
-                              </v-btn>
-                            </v-btn-toggle>
+                              <v-icon left>mdi-thumb-down-outline</v-icon>
+                              {{ r.voteCount }}
+                            </v-btn> -->
+                            <!-- <span class="subtitle-1 mr-4">{{
+                              r.voteCount
+                            }}</span> -->
+                            <!-- </v-btn-toggle> -->
                           </div>
                         </v-list>
                       </v-col>
@@ -582,6 +588,56 @@ export default {
       }).then((result) => {
         console.log(result.data);
         this.$router.go();
+      });
+    },
+    vote(r, v) {
+      if (localStorage.getItem("fyptoken")) {
+        axios
+          .get("/api/user")
+          .then((response) => {
+            if (response.status && response.status == 200) {
+              this.userId = response.data.id;
+              this.submitVote(r, v);
+            }
+          })
+          .catch((errors) => {
+            if (errors.response.status == 401) {
+              localStorage.removeItem("fyptoken");
+              this.$router.push({ name: "Login" });
+            }
+            if (errors.response.data.exception) {
+              // this.exception = errors.response.data.message;
+              console.log(errors.response.data.message);
+            }
+            // this.errors = errors.response.data.errors;
+            console.log(errors.response.data.errors);
+          });
+      } else {
+        this.$router.push({ name: "Login" });
+      }
+      console.log(this.userId, r, v);
+    },
+    submitVote(r, v) {
+      axios({
+        url: "/graphql",
+        method: "post",
+        data: {
+          query: `
+            mutation createVote($reviewId: Int!, $userId: Int!, $vote: Int!) {
+              createVote(review_id: $reviewId, user_id: $userId, val: $vote) {
+                id
+                val
+              }
+            }
+          `,
+          variables: {
+            reviewId: parseInt(r),
+            userId: parseInt(this.userId),
+            vote: parseInt(v),
+          },
+        },
+      }).then((result) => {
+        console.log(result.data);
       });
     },
   },

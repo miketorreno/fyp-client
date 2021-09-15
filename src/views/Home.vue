@@ -40,7 +40,7 @@
                 <v-card-text>
                   <v-row align="center" class="mx-0">
                     <v-rating
-                      :value="4.5"
+                      :value="b.ratingAvg"
                       color="amber"
                       dense
                       half-increments
@@ -49,7 +49,7 @@
                     ></v-rating>
 
                     <div class="grey--text ms-4">
-                      4.5 (413)
+                      {{ b.ratingAvg }} ({{ b.reviewCount }})
                     </div>
                   </v-row>
 

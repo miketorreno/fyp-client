@@ -19,6 +19,8 @@ query {
     is_open
     verified
     claimed
+    reviewCount
+    ratingAvg
     category {
       id
       __id
@@ -29,6 +31,7 @@ query {
       __id
       rating
       review
+      voteCount
     }
   }
 }

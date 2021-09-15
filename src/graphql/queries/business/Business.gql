@@ -19,6 +19,8 @@ query business($id: String!) {
     is_open
     verified
     claimed
+    reviewCount
+    ratingAvg
     category {
       id
       __id
@@ -29,6 +31,7 @@ query business($id: String!) {
       __id
       rating
       review
+      voteCount
       created_at
       user {
         name
