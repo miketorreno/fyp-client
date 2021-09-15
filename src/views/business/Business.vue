@@ -143,7 +143,7 @@
                     <hr />
                     <v-row class="mt-4">
                       <v-col xs="12" sm="12" md="10" lg="8" xl="8">
-                        <h4>Rate and review</h4>
+                        <!-- <h4>Rate and review</h4>
                         <p>Share your experience to help others</p>
                         <v-form class="mb-6">
                           <v-container>
@@ -162,7 +162,7 @@
                                 ></v-textarea>
 
                                 <div class="text-right">
-                                  <v-btn small color="" class="mr-4">
+                                  <v-btn small color="" class="mr-4" @click="reset">
                                     Cancel
                                   </v-btn>
 
@@ -173,7 +173,7 @@
                               </v-col>
                             </v-row>
                           </v-container>
-                        </v-form>
+                        </v-form> -->
                         <v-list
                           two-line
                           subheader
@@ -197,7 +197,7 @@
                           <div class="mx-4">
                             <v-row class="px-2 py-4">
                               <v-rating
-                                :value="4.5"
+                                :value="r.rating"
                                 color="amber"
                                 dense
                                 half-increments
@@ -239,28 +239,51 @@
                       <v-col xs="12" sm="12" md="10" lg="8" xl="8">
                         <h4>Rate and review</h4>
                         <p>Share your experience to help others</p>
-                        <v-form class="mb-6">
+                        <v-form
+                          ref="review"
+                          v-model="valid"
+                          lazy-validation
+                          class="mb-6"
+                        >
                           <v-container>
                             <v-row>
                               <v-col cols="12" md="10">
                                 <v-rating
+                                  v-model="rating"
                                   background-color="amber lighten-3"
                                   color="amber"
                                 ></v-rating>
 
                                 <v-textarea
+                                  v-model="review"
                                   clearable
                                   clear-icon="mdi-close-circle"
                                   placeholder="Share details of your own experience at this place"
                                   rows="2"
                                 ></v-textarea>
 
+                                <input
+                                  type="hidden"
+                                  :value="data.business.id"
+                                  ref="business"
+                                />
+
                                 <div class="text-right">
-                                  <v-btn small color="" class="mr-4">
+                                  <v-btn
+                                    small
+                                    color=""
+                                    class="mr-4"
+                                    @click="reset"
+                                  >
                                     Cancel
                                   </v-btn>
 
-                                  <v-btn small color="primary">
+                                  <v-btn
+                                    :disabled="!valid"
+                                    @click="validate"
+                                    small
+                                    color="primary"
+                                  >
                                     Submit
                                   </v-btn>
                                 </div>
@@ -291,7 +314,7 @@
                           <div class="mx-4">
                             <v-row class="px-2 py-4">
                               <v-rating
-                                :value="4.5"
+                                :value="r.rating"
                                 color="amber"
                                 dense
                                 half-increments
@@ -334,7 +357,7 @@
                         v-for="n in 9"
                         :key="n"
                         class="d-flex child-flex"
-                        xs="12"
+                        cols="12"
                         sm="6"
                         md="4"
                         lg="3"
@@ -420,11 +443,15 @@
 </template>
 
 <script>
+import axios from "axios";
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:8000";
+
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      rating: 4,
+      // rating: 4,
       tab: null,
       items: ["Overveiw", "Reviews", "Photos", "About"],
       text:
@@ -442,6 +469,10 @@ export default {
           height: -35,
         },
       },
+      valid: true,
+      rating: 0,
+      review: "",
+      userId: null,
     };
   },
   methods: {
@@ -492,6 +523,66 @@ export default {
 
       localStorage.center = JSON.stringify(center);
       localStorage.zoom = zoom;
+    },
+    reset() {
+      this.rating = 0;
+      this.$refs.review.reset();
+    },
+    validate() {
+      if (this.$refs.review.validate()) {
+        if (localStorage.getItem("fyptoken")) {
+          axios
+            .get("/api/user")
+            .then((response) => {
+              if (response.status && response.status == 200) {
+                this.userId = response.data.id;
+                this.submitReview();
+              }
+            })
+            .catch((errors) => {
+              if (errors.response.status == 401) {
+                localStorage.removeItem("fyptoken");
+                this.$router.push({ name: "Login" });
+              }
+              if (errors.response.data.exception) {
+                // this.exception = errors.response.data.message;
+                console.log(errors.response.data.message);
+              }
+              // this.errors = errors.response.data.errors;
+              console.log(errors.response.data.errors);
+            });
+        } else {
+          this.$router.push({ name: "Login" });
+        }
+        // console.log(this.$refs.business.value, this.rating, this.review);
+      }
+    },
+    submitReview() {
+      axios({
+        url: "/graphql",
+        method: "post",
+        data: {
+          query: `
+            mutation createReview($businessId: Int!, $userId: Int!, $rating: Int!, $review: String!) {
+              createReview(business_id: $businessId, user_id: $userId, rating: $rating, review: $review) {
+                id
+                __id
+                rating
+                review
+              }
+            }
+          `,
+          variables: {
+            businessId: parseInt(this.$refs.business.value),
+            userId: parseInt(this.userId),
+            rating: parseInt(this.rating),
+            review: this.review,
+          },
+        },
+      }).then((result) => {
+        console.log(result.data);
+        this.$router.go();
+      });
     },
   },
   computed: {

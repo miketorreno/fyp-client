@@ -8,7 +8,7 @@
         <div v-else-if="data" class="result apollo">
           <v-row class="pa-2">
             <v-col
-              v-for="b in data.businesses.data"
+              v-for="b in data.businesses"
               :key="b.__id"
               xs="12"
               sm="6"
