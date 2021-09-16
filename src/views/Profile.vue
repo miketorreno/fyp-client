@@ -13,8 +13,8 @@
               <v-row>
                 <v-col cols="4" sm="3" md="2" lg="2" xl="2">
                   <v-img
-                    src="@/assets/img/john.png"
-                    lazy-src="@/assets/img/john.png"
+                    src="http://localhost:8000/storage/profile/user.jpg"
+                    lazy-src="http://localhost:8000/storage/profile/user.jpg"
                     aspect-ratio="1"
                     class="grey lighten-2"
                   >
@@ -116,7 +116,7 @@
                           >
                             <v-list-item two-line>
                               <v-list-item-avatar tile size="70" color="grey">
-                                <v-img src="@/assets/img/cooking.png"></v-img>
+                                <v-img :src="r.business.header_image"></v-img>
                               </v-list-item-avatar>
                               <v-list-item-content>
                                 <v-list-item-title class="text-h6">

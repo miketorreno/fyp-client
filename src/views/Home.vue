@@ -29,7 +29,7 @@
                   ></v-progress-linear>
                 </template>
 
-                <v-img height="150" src="@/assets/img/cooking.png"></v-img>
+                <v-img height="150" :src="b.header_image"></v-img>
 
                 <v-card-title>
                   <span class="text-truncate">

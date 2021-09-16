@@ -185,7 +185,7 @@
                           <hr />
                           <v-list-item>
                             <v-list-item-avatar>
-                              <v-img src="@/assets/img/john.png"></v-img>
+                              <v-img :src="r.user.avatar"></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
                               <v-list-item-title>
@@ -294,7 +294,7 @@
                           <hr />
                           <v-list-item>
                             <v-list-item-avatar>
-                              <v-img src="@/assets/img/john.png"></v-img>
+                              <v-img :src="r.user.avatar"></v-img>
                             </v-list-item-avatar>
                             <v-list-item-content>
                               <v-list-item-title>

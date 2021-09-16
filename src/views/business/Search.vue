@@ -9,19 +9,19 @@
         <v-row>
           <v-col cols="12" md="10">
             <v-card
-              v-for="r in result"
-              :key="r.__id"
+              v-for="b in result"
+              :key="b.__id"
               class="mx-auto mb-4"
               outlineds
-              :to="{ path: `/business/${r.__id}` }"
+              :to="{ path: `/business/${b.__id}` }"
             >
-              <v-list-item v-if="r.category.id == business" three-line>
+              <v-list-item v-if="b.category.id == business" three-line>
                 <v-list-item-avatar tile size="90" color="grey">
-                  <v-img src="@/assets/img/cooking.png"></v-img>
+                  <v-img :src="b.header_image"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title class="text-h6">
-                    {{ r.business_name }}
+                    {{ b.business_name }}
                   </v-list-item-title>
                   <v-list-item-subtitle>
                     <v-row class="pa-2">
@@ -40,7 +40,7 @@
                     </v-row>
                   </v-list-item-subtitle>
                   <v-list-item-subtitle>
-                    <p>{{ r.address }}</p>
+                    <p>{{ b.address }}</p>
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -110,6 +110,7 @@ export default {
                 __id
                 business_name
                 address
+                header_image
                 category {
                   id
                 }

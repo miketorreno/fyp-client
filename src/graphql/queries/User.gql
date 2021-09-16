@@ -19,6 +19,7 @@ query business($id: String!) {
         __id
         business_name
         address
+        header_image
       }
     }
   }

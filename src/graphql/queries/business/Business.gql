@@ -35,6 +35,7 @@ query business($id: String!) {
       created_at
       user {
         name
+        avatar
       }
     }
   }

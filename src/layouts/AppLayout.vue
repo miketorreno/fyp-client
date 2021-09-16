@@ -6,7 +6,9 @@
           <v-list>
             <v-list-item>
               <v-list-item-avatar>
-                <v-img src="@/assets/img/john.png"></v-img>
+                <v-img
+                  src="http://localhost:8000/storage/profile/user.jpg"
+                ></v-img>
               </v-list-item-avatar>
             </v-list-item>
 
@@ -134,8 +136,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-avatar class="d-none d-md-flex ml-5" size="42">
             <img
-              src="@/assets/img/john.jpg"
-              alt="John"
+              src="http://localhost:8000/storage/profile/user.jpg"
               v-bind="attrs"
               v-on="on"
             />
