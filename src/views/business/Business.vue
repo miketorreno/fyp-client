@@ -327,7 +327,7 @@
                               color="deep-purple accent-3"
                               group
                             > -->
-                            <v-btn small @click="vote(r.id, 1)" class="mr-2">
+                            <v-btn small @click="vote(r.id, 1)" class="mr-3">
                               <v-icon left>mdi-thumb-up-outline</v-icon>
                               helpful
                             </v-btn>

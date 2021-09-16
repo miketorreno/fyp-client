@@ -143,7 +143,7 @@
         </template>
 
         <v-list>
-          <v-list-item :to="{ path: '/profile' }">
+          <v-list-item :to="{ path: `/profile/${pidtoken}` }">
             <v-list-item-title>Profile</v-list-item-title>
           </v-list-item>
           <v-list-item
@@ -246,6 +246,7 @@ export default {
   data: () => ({
     drawer: null,
     token: localStorage.getItem("fyptoken"),
+    pidtoken: localStorage.getItem("pidtoken"),
     selectedItem: null,
     showMenu: false,
     errors: null,
@@ -289,6 +290,7 @@ export default {
             //
           }
           localStorage.removeItem("fyptoken");
+          localStorage.removeItem("pidtoken");
           this.token = null;
           this.$router.push({ name: "Home" });
         })

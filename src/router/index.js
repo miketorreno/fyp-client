@@ -109,7 +109,7 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
-    path: "/profile",
+    path: "/profile/:id",
     name: "Profile",
     component: () =>
       import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
