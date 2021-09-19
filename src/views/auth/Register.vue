@@ -100,9 +100,19 @@ export default {
                 .find((row) => row.startsWith("XSRF-TOKEN="))
                 .split("=")[1];
               localStorage.setItem("fyptoken", this.fyptoken);
-              this.$router.push({
-                name: "Home",
-              });
+              axios
+                .get("/api/user")
+                .then((response) => {
+                  if (response.status && response.status == 200) {
+                    localStorage.setItem("pidtoken", response.data.__id);
+                    this.$router.push({
+                      name: "Home",
+                    });
+                  }
+                })
+                .catch((errors) => {
+                  console.log(errors);
+                });
             }
           })
           .catch((errors) => {

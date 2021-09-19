@@ -1,4 +1,4 @@
-query business($id: String!) {
+query user($id: String!) {
   user(__id: $id) {
     id
     __id
