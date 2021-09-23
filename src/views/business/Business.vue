@@ -55,8 +55,8 @@
                 <!-- <a href="" class="body-1 ml-1">
                   {{ data.business.category.category }}
                 </a> -->
-                <span class="mx-1">&bull;</span>
-                <span class="body-1">1.8mi</span>
+                <!-- <span class="mx-1">&bull;</span>
+                <span class="body-1">1.8mi</span> -->
               </v-row>
             </v-card-subtitle>
 
@@ -286,6 +286,15 @@
                           </v-container>
                         </v-form>
                         <v-list
+                          v-if="!data.business.reviews[0]"
+                          justify="center"
+                        >
+                          <h3 class="text-h6 my-3">
+                            Be the first to write a review
+                          </h3>
+                        </v-list>
+                        <v-list
+                          v-else
                           two-line
                           subheader
                           v-for="r in data.business.reviews"
@@ -358,10 +367,15 @@
               <v-tab-item value="photos">
                 <v-card color="basil" text>
                   <v-card-text>
-                    <v-row>
+                    <v-row v-if="!data.business.photos[0]" justify="center">
+                      <h3 class="text-h6 my-5">
+                        No photos yet
+                      </h3>
+                    </v-row>
+                    <v-row v-else>
                       <v-col
-                        v-for="n in 9"
-                        :key="n"
+                        v-for="p in data.business.photos"
+                        :key="p.__id"
                         class="d-flex child-flex"
                         cols="12"
                         sm="6"
@@ -370,12 +384,8 @@
                         xl="2"
                       >
                         <v-img
-                          :src="
-                            `https://picsum.photos/500/300?image=${n * 5 + 10}`
-                          "
-                          :lazy-src="
-                            `https://picsum.photos/10/6?image=${n * 5 + 10}`
-                          "
+                          :src="p.url"
+                          :lazy-src="p.url"
                           aspect-ratio="1"
                           class="grey lighten-2"
                         >
@@ -428,7 +438,7 @@
                       <v-icon left>mdi-abacus</v-icon>
                       {{ data.business.email }} Email Placeholder
                     </p>
-                    <p class="">
+                    <p v-if="!data.business.claimed" class="">
                       <v-icon left>mdi-shield-check-outline</v-icon>
                       <v-btn small text depressed>
                         Claim

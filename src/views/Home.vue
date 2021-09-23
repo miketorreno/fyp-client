@@ -19,7 +19,7 @@
               <v-card
                 :loading="loading"
                 class="ma-333"
-                :to="{ path: `/business/${b.__id}`, params: { id: b._id } }"
+                :to="{ path: `/business/${b.__id}`, params: { id: b.__id } }"
               >
                 <template slot="progress">
                   <v-progress-linear

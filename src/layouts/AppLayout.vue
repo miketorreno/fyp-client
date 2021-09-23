@@ -253,6 +253,11 @@ export default {
     errors: null,
     items: [
       {
+        text: "Home",
+        icon: "mdi-home-outline",
+        link: "/",
+      },
+      {
         text: "Write a Review",
         icon: "mdi-star-box-outline",
         link: "/writeareview",

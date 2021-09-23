@@ -120,6 +120,7 @@ export default {
           },
         }).then((result) => {
           this.result = result.data.data.businessSearch;
+          // console.log(this.result);
         });
     },
   },
