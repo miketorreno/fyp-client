@@ -45,7 +45,7 @@
                   <span class="mx-1">&bull;</span>
                 </span>
                 <span v-else class="mr-2">
-                  <v-btn small dark>
+                  <v-btn small dark @click="claim">
                     Claim
                   </v-btn>
                 </span>
@@ -440,7 +440,7 @@
                     </p>
                     <p v-if="!data.business.claimed" class="">
                       <v-icon left>mdi-shield-check-outline</v-icon>
-                      <v-btn small text depressed>
+                      <v-btn small text depressed @click="claim">
                         Claim
                       </v-btn>
                     </p>
@@ -649,6 +649,10 @@ export default {
       }).then((result) => {
         console.log(result.data);
       });
+    },
+    claim() {
+      // window.open("http://localhost:8081/login");
+      window.location.href = "http://localhost:8081/login";
     },
   },
   computed: {
