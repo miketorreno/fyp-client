@@ -44,6 +44,12 @@ const routes = [
     meta: { layout: AppLayout },
   },
   {
+    path: "/home",
+    name: "Home",
+    component: Home,
+    meta: { layout: AppLayout },
+  },
+  {
     path: "/business/:id",
     name: "Business",
     // route level code-splitting

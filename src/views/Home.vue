@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h3 class="ma-2 mt-5">Local Businesses</h3>
+    <!-- <h3 class="ma-2 mt-5">Local Businesses</h3> -->
     <ApolloQuery :query="require('@/graphql/queries/business/Businesses.gql')">
       <template v-slot="{ result: { loading, error, data } }">
         <div v-if="loading" class="loading apollo">Loading...</div>
@@ -67,10 +67,10 @@
             </v-col>
           </v-row>
         </div>
-        <div v-else class="no-result apollo">No result :(</div>
+        <!-- <div v-else class="no-result apollo">No result :(</div> -->
       </template>
     </ApolloQuery>
-    <div class="my-5 text-center">
+    <!-- <div class="my-5 text-center">
       <v-btn text>
         More
       </v-btn>
@@ -98,7 +98,7 @@
       <v-btn text>
         More
       </v-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 

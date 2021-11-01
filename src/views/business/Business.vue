@@ -50,10 +50,10 @@
                   </v-btn>
                 </span>
 
-                {{ data.business.category.category }}
+                {{ data.business.business_category.category }}
 
                 <!-- <a href="" class="body-1 ml-1">
-                  {{ data.business.category.category }}
+                  {{ data.business.business_category.category }}
                 </a> -->
                 <!-- <span class="mx-1">&bull;</span>
                 <span class="body-1">1.8mi</span> -->
@@ -84,7 +84,7 @@
               <v-tab-item value="overview">
                 <v-card color="basil" text>
                   <v-card-text>
-                    <div class="mb-4">
+                    <!-- <div class="mb-4">
                       <span class="mr-5">
                         <v-icon color="success">mdi-check</v-icon>
                         Takeaway
@@ -94,7 +94,7 @@
                         Dining
                       </span>
                     </div>
-                    <hr />
+                    <hr /> -->
                     <div class="mt-4">
                       <p class="">
                         <v-icon left>mdi-abacus</v-icon>
@@ -104,10 +104,10 @@
                         <v-icon left>mdi-map-marker-outline</v-icon>
                         {{ data.business.city }}
                       </p>
-                      <p class="">
+                      <!-- <p class="">
                         <v-icon left>mdi-clock-time-four-outline</v-icon>
                         Hours Placeholder
-                      </p>
+                      </p> -->
                     </div>
                     <div class="mt-44">
                       <GmapMap
@@ -191,9 +191,9 @@
                               <v-list-item-title>
                                 {{ r.user.name }}
                               </v-list-item-title>
-                              <v-list-item-subtitle>
+                              <!-- <v-list-item-subtitle>
                                 additional info
-                              </v-list-item-subtitle>
+                              </v-list-item-subtitle> -->
                             </v-list-item-content>
                           </v-list-item>
                           <div class="mx-4">
@@ -309,9 +309,9 @@
                               <v-list-item-title>
                                 {{ r.user.name }}
                               </v-list-item-title>
-                              <v-list-item-subtitle>
+                              <!-- <v-list-item-subtitle>
                                 additional info
-                              </v-list-item-subtitle>
+                              </v-list-item-subtitle> -->
                             </v-list-item-content>
                           </v-list-item>
                           <div class="mx-4">
@@ -418,14 +418,14 @@
                       <v-icon left>mdi-map-marker-outline</v-icon>
                       {{ data.business.city }}
                     </p>
-                    <p class="">
+                    <!-- <p class="">
                       <v-icon left>mdi-clock-time-four-outline</v-icon>
                       Hours Placeholder
-                    </p>
-                    <p class="">
+                    </p> -->
+                    <!-- <p class="">
                       <v-icon left>mdi-silverware</v-icon>
                       Menu
-                    </p>
+                    </p> -->
                     <p class="">
                       <v-icon left>mdi-map-marker-outline</v-icon>
                       {{ data.business.city }}
@@ -452,7 +452,7 @@
         </div>
 
         <!-- No result -->
-        <div v-else class="no-result apollo">No result :(</div>
+        <!-- <div v-else class="no-result apollo">No result :(</div> -->
       </template>
     </ApolloQuery>
   </div>
@@ -648,6 +648,7 @@ export default {
         },
       }).then((result) => {
         console.log(result.data);
+        this.$router.go();
       });
     },
     claim() {

@@ -8,43 +8,55 @@
         <!-- <h3 class="mb-3">See the business you’d like to review?</h3> -->
         <v-row>
           <v-col cols="12" md="10">
-            <v-card
-              v-for="b in result"
-              :key="b.__id"
-              class="mx-auto mb-4"
-              outlineds
-              :to="{ path: `/business/${b.__id}` }"
-            >
-              <v-list-item v-if="b.category.id == business" three-line>
-                <v-list-item-avatar tile size="90" color="grey">
-                  <v-img :src="b.header_image"></v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title class="text-h6">
-                    {{ b.business_name }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    <v-row class="pa-2">
-                      <v-rating
-                        :value="4.5"
-                        color="amber"
-                        dense
-                        half-increments
-                        readonly
-                        size="22"
-                      ></v-rating>
+            <div v-if="!searching">
+              <div v-if="resultCount > 0">
+                <v-card
+                  v-for="b in result"
+                  :key="b.__id"
+                  class="mx-auto mb-4"
+                  outlineds
+                  :to="{ path: `/business/${b.__id}` }"
+                >
+                  <v-list-item
+                    v-if="b.business_category.id == business"
+                    three-line
+                  >
+                    <v-list-item-avatar tile size="90" color="grey">
+                      <v-img :src="b.header_image"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title class="text-h6">
+                        {{ b.business_name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        <v-row class="pa-2">
+                          <v-rating
+                            :value="b.ratingAvg"
+                            color="amber"
+                            dense
+                            half-increments
+                            readonly
+                            size="22"
+                          ></v-rating>
 
-                      <div class="grey--text ms-4 subtitle-1">
-                        4.5 (413)
-                      </div>
-                    </v-row>
-                  </v-list-item-subtitle>
-                  <v-list-item-subtitle>
-                    <p>{{ b.address }}</p>
-                  </v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-card>
+                          <div class="grey--text ms-4 subtitle-1">
+                            {{ b.ratingAvg }} ({{ b.reviewCount }})
+                          </div>
+                        </v-row>
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle>
+                        <p>{{ b.address }}</p>
+                      </v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-card>
+              </div>
+              <div v-else>
+                <h3 class="text-center mt-6">
+                  No results found
+                </h3>
+              </div>
+            </div>
           </v-col>
         </v-row>
       </v-col>
@@ -61,6 +73,8 @@ export default {
   name: "Search",
   data: () => ({
     result: null,
+    resultCount: 0,
+    searching: false,
     business: "",
     location: "",
   }),
@@ -98,6 +112,8 @@ export default {
   },
   methods: {
     search() {
+      this.searching = true;
+      this.resultCount = 0;
       (this.business = this.$route.params.business),
         (this.location = this.$route.params.location),
         axios({
@@ -107,19 +123,31 @@ export default {
             query: `
             query {
               businessSearch(search: "${this.$route.params.location}") {
-                __id
-                business_name
-                address
-                header_image
-                category {
+                data {
                   id
+                  __id
+                  business_name
+                  address
+                  header_image
+                  business_category {
+                    id
+                  }
+                  reviewCount
+                  ratingAvg
                 }
               }
             }
           `,
           },
         }).then((result) => {
-          this.result = result.data.data.businessSearch;
+          this.result = result.data.data.businessSearch.data;
+          this.result.forEach((e) => {
+            if (e.business_category.id == this.business) {
+              this.resultCount++;
+              // console.log("counting");
+            }
+          });
+          this.searching = false;
           // console.log(this.result);
         });
     },

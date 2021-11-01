@@ -4,7 +4,7 @@
       <v-navigation-drawer v-model="drawer" app>
         <div class="d-flex d-md-none">
           <v-list>
-            <v-list-item>
+            <v-list-item :to="{ path: `/profile/${pidtoken}` }">
               <v-list-item-avatar>
                 <v-img
                   src="http://localhost:8000/storage/profile/user.jpg"
@@ -12,19 +12,20 @@
               </v-list-item-avatar>
             </v-list-item>
 
-            <v-list-item link>
+            <!-- <v-list-item link>
               <v-list-item-content>
                 <v-list-item-title class="text-h6">
                   John Leider
                 </v-list-item-title>
                 <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </div>
 
         <v-list class="d-none d-md-flex">
-          <v-list-item link :to="{ path: '/' }">
+          <!-- <v-list-item link :to="{ path: '/' }"> -->
+          <v-list-item link>
             <v-list-item-content>
               <v-list-item-title class="text-h6 text-center">
                 Bizz
@@ -154,8 +155,14 @@
           >
             <v-list-item-title>Logout</v-list-item-title>
           </v-list-item>
-          <v-list-item v-else :to="{ path: '/login' }">
+          <!-- <v-list-item v-else :to="{ path: '/login' }">
             <v-list-item-title>Login</v-list-item-title>
+          </v-list-item> -->
+          <v-list-item v-if="!token" :to="{ path: '/login' }">
+            <v-list-item-title>Login</v-list-item-title>
+          </v-list-item>
+          <v-list-item v-if="!token" :to="{ path: '/register' }">
+            <v-list-item-title>Signup</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -262,22 +269,22 @@ export default {
         icon: "mdi-star-box-outline",
         link: "/writeareview",
       },
-      {
-        text: "Notifications",
-        icon: "mdi-bell-outline",
-        link: "/notifications",
-      },
-      {
-        text: "Activities",
-        icon: "mdi-chart-line-variant",
-        link: "/activities",
-      },
-      { text: "Recently Viewed", icon: "mdi-history", link: "/recent" },
-      {
-        text: "Add a Business",
-        icon: "mdi-office-building-outline",
-        link: "/addabusiness",
-      },
+      // {
+      //   text: "Notifications",
+      //   icon: "mdi-bell-outline",
+      //   link: "/notifications",
+      // },
+      // {
+      //   text: "Activities",
+      //   icon: "mdi-chart-line-variant",
+      //   link: "/activities",
+      // },
+      // { text: "Recently Viewed", icon: "mdi-history", link: "/recent" },
+      // {
+      //   text: "Add a Business",
+      //   icon: "mdi-office-building-outline",
+      //   link: "/addabusiness",
+      // },
       /* { text: "Settings", icon: "mdi-cog-outline", link: "/settings" }, */
     ],
     valid: true,
