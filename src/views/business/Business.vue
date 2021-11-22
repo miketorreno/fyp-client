@@ -44,11 +44,11 @@
                   Claimed
                   <span class="mx-1">&bull;</span>
                 </span>
-                <span v-else class="mr-2">
+                <!-- <span v-else class="mr-2">
                   <v-btn small dark @click="claim">
                     Claim
                   </v-btn>
-                </span>
+                </span> -->
 
                 {{ data.business.business_category.category }}
 
@@ -432,18 +432,18 @@
                     </p>
                     <p class="">
                       <v-icon left>mdi-phone-outline</v-icon>
-                      {{ data.business.telephone_number }} Phone Placeholder
+                      {{ data.business.telephone_number || "N/A" }}
                     </p>
                     <p class="">
                       <v-icon left>mdi-abacus</v-icon>
-                      {{ data.business.email }} Email Placeholder
+                      {{ data.business.email || "N/A" }}
                     </p>
-                    <p v-if="!data.business.claimed" class="">
+                    <!-- <p v-if="!data.business.claimed" class="">
                       <v-icon left>mdi-shield-check-outline</v-icon>
                       <v-btn small text depressed @click="claim">
                         Claim
                       </v-btn>
-                    </p>
+                    </p> -->
                   </v-card-text>
                 </v-card>
               </v-tab-item>
