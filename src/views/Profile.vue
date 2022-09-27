@@ -68,12 +68,8 @@
                 color="basil"
                 grow
               >
-                <v-tab href="#about">
-                  About
-                </v-tab>
-                <v-tab href="#reviews">
-                  Reviews
-                </v-tab>
+                <v-tab href="#about"> About </v-tab>
+                <v-tab href="#reviews"> Reviews </v-tab>
               </v-tabs>
 
               <v-tabs-items v-model="tab">
@@ -199,9 +195,7 @@
               Update
             </v-btn>
 
-            <v-btn class="mr-4" @click="reset">
-              Cancel
-            </v-btn>
+            <v-btn class="mr-4" @click="reset"> Cancel </v-btn>
           </v-form>
         </v-col>
       </v-row>
